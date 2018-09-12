@@ -1,16 +1,16 @@
 package ru.hse.spb
 
-import java.lang.Math.*
+import kotlin.math.*
 import java.util.*
 
-data class Point(var x: Double, var y: Double)
+data class Point(internal val x: Double, internal val y: Double)
 
 operator fun Point.plus(p: Point) = Point(x + p.x, y + p.y)
 operator fun Point.minus(p: Point) = Point(x - p.x, y - p.y)
 operator fun Point.times(a: Double) = Point(x * a, y * a)
 
 fun distance(p1: Point, p2: Point): Double {
-    return sqrt(Math.pow(p1.x - p2.x, 2.0) + Math.pow(p1.y - p2.y, 2.0))
+    return sqrt((p1.x - p2.x).pow(2) + (p1.y - p2.y).pow(2))
 }
 
 fun solver(source: Point, destination: Point, v: Double, t: Double, speedBefore: Point, speedAfter: Point): Double {
