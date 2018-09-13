@@ -3,17 +3,17 @@ package ru.hse.spb
 import kotlin.math.*
 import java.util.*
 
-data class Point(internal val x: Double, internal val y: Double)
+internal class Point(val x: Double, val y: Double)
 
-operator fun Point.plus(p: Point) = Point(x + p.x, y + p.y)
-operator fun Point.minus(p: Point) = Point(x - p.x, y - p.y)
-operator fun Point.times(a: Double) = Point(x * a, y * a)
+private operator fun Point.plus(p: Point) = Point(x + p.x, y + p.y)
+private operator fun Point.minus(p: Point) = Point(x - p.x, y - p.y)
+private operator fun Point.times(a: Double) = Point(x * a, y * a)
 
-fun distance(p1: Point, p2: Point): Double {
+private fun distance(p1: Point, p2: Point): Double {
     return sqrt((p1.x - p2.x).pow(2) + (p1.y - p2.y).pow(2))
 }
 
-fun solver(source: Point, destination: Point, v: Double, t: Double, speedBefore: Point, speedAfter: Point): Double {
+internal fun solver(source: Point, destination: Point, v: Double, t: Double, speedBefore: Point, speedAfter: Point): Double {
     var left = 0.0
     var right = 1000000000.0
     val absoluteDestination = destination - source
