@@ -1,6 +1,17 @@
+buildscript {
+    ext.kotlin_version = '1.1.4-3'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.2.61'
+    id 'antlr'
 }
 
 group 'ru.hse.spb'
@@ -12,9 +23,19 @@ repositories {
     mavenCentral()
 }
 
+generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments += ['-package', 'ru.hse.spb.parser', '-visitor']
+    outputDirectory = new File("$buildDir/generated-src/antlr/main/ru/hse/spb/parser")
+}
+compileJava.dependsOn generateGrammarSource
+compileKotlin.dependsOn generateGrammarSource
+
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile "org.antlr:antlr4-runtime:4.7"
+    antlr "org.antlr:antlr4:4.7"
 }
 
 compileKotlin {

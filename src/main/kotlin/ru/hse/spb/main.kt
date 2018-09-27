@@ -1,13 +1,25 @@
 package ru.hse.spb
 
-fun getGreeting(): String {
-    val words = mutableListOf<String>()
-    words.add("Hello,")
-    words.add("world!")
+import ru.hse.spb.parser.ExpLexer
+import ru.hse.spb.parser.ExpParser
+import org.antlr.v4.runtime.CharStreams
+import org.antlr.v4.runtime.CommonTokenStream
 
-    return words.joinToString(separator = " ")
-}
 
 fun main(args: Array<String>) {
-    println(getGreeting())
+    val text = CharStreams.fromFileName(args.first())
+    val expLexer = ExpLexer(text)
+    val parser = ExpParser(CommonTokenStream(expLexer))
+    parser.buildParseTree = true
+    val tree = parser.file()
+    val visitor = MyVisitor()
+
+
+    try {
+        visitor.visit(tree)
+    } catch (exception: IllegalStateException) {
+        System.err.println("Parsing exception: " + exception.message)
+    } catch (exception: InterpreterException) {
+        System.err.println("Interpretation exception: " + exception.message)
+    }
 }
