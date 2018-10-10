@@ -143,6 +143,37 @@ class TestSource {
     }
 
     @Test
+    fun alignTest() {
+        val test = document {
+            content {
+                align(Align.Center) {
+                    +"test0"
+                }
+                align(Align.Left) {
+                    +"test1"
+                }
+                align(Align.Right) {
+                    +"test2"
+                }
+            }
+        }.toString().trimIndent()
+        val result = """
+            \begin{document}
+            \begin{center}
+            test0
+            \end{center}
+            \begin{flushleft}
+            test1
+            \end{flushleft}
+            \begin{flushright}
+            test2
+            \end{flushright}
+            \end{document}
+        """.trimIndent()
+        assertEquals(result, test)
+    }
+
+    @Test
     fun complexTest() {
         val test =
                 document {

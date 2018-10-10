@@ -88,13 +88,13 @@ open class Document(printer: String.() -> Unit) : Element(printer) {
 
     fun align(type: Align, init: Document.() -> Unit) {
         val align = when (type) {
-            Align.Left -> printer("flushleft")
-            Align.Right -> printer("flushright")
-            Align.Center -> printer("center")
+            Align.Left -> "flushleft"
+            Align.Right -> "flushright"
+            Align.Center -> "center"
         }
-        printer("\\begin{$align}")
+        printer("\\begin{$align}\n")
         init()
-        printer("\\end{$align}")
+        printer("\\end{$align}\n")
     }
 
     fun customTag(name: String, vararg params: Pair<String, String>, init: Document.() -> Unit) {
@@ -120,6 +120,7 @@ open class Document(printer: String.() -> Unit) : Element(printer) {
 @DslMarker
 annotation class TexMarker
 
+
 @TexMarker
 class Itemize(printer: String.() -> Unit) : Element(printer) {
     fun item(init: Document.() -> Unit) {
@@ -127,7 +128,6 @@ class Itemize(printer: String.() -> Unit) : Element(printer) {
         Document(printer).init()
     }
 }
-
 
 
 class Buffer(private val sb: StringBuilder) {
