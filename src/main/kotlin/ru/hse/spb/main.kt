@@ -8,7 +8,7 @@ fun <A, B> Pair<A, B>.format(): String = "$first=$second"
 
 fun printerAdditionalParams(params: Array<out Pair<String, String>>) : String {
     return if (params.isNotEmpty())
-        "[${params.joinToString(",") { param -> param.format() }}]"
+        params.joinToString(",", prefix = "[", postfix = "]") { it.format() }
     else ""
 }
 
@@ -18,7 +18,7 @@ enum class Align {
 }
 
 
-abstract class Element(protected var printer: (String) -> Unit)
+abstract class Element(protected val printer: (String) -> Unit)
 
 
 fun document(init: DocumentPreamble.() -> Unit): Buffer {
@@ -62,7 +62,7 @@ class DocumentPreamble(printer: String.() -> Unit) : Document(printer) {
 
 }
 
-
+@TexMarker
 open class Document(printer: String.() -> Unit) : Element(printer) {
 
     fun frame(frameTitle: String, vararg params: Pair<String, String>, init: Document.() -> Unit) {
@@ -144,7 +144,9 @@ fun main(args: Array<String>) {
             frame("frametitle", "arg1" to "arg2") {
                 itemize {
                     for (row in listOf("a", "b", "c")) {
-                        item { +"$row text" }
+                        item { +"$row text"
+                            // item {}
+                        }
                     }
                 }
             }
